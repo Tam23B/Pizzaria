@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Tham's Pizza</title>
+  <style>
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background: url('Images/pizza.jpg') no-repeat center center fixed;
+      background-size: cover;
+      color: #4e342e;
+      opacity: 0;
+      transition: opacity 1s ease-in;
+    }
+
+    body.loaded {
+      opacity: 1;
+    }
+
+    header {
+      background-color: #d32f2f;
+      color: white;
+      padding: 1em;
+      text-align: center;
+      position: sticky;
+      top: 0;
+      z-index: 10;
+    }
+
+    nav {
+      background-color: #b71c1c;
+      display: flex;
+      justify-content: center;
+      padding: 0.5em 0;
+    }
+
+    nav a {
+      color: white;
+      text-decoration: none;
+      margin: 0 1em;
+      font-weight: bold;
+    }
+
+    nav a:hover {
+      text-decoration: underline;
+    }
+
+    .container {
+      max-width: 1000px;
+      margin: 2em auto;
+      padding: 0 1em;
+    }
+
+    .section {
+      margin-bottom: 3em;
+      opacity: 0;
+      transform: translateY(50px);
+      transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+    }
+
+    .section.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .pizza-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 1.5em;
+    }
+
+    .pizza-card {
+      background-color: white;
+      border-radius: 12px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+      overflow: hidden;
+      transition: transform 0.3s;
+    }
+
+    .pizza-card:hover {
+      transform: scale(1.02);
+    }
+
+    .pizza-card img {
+      width: 100%;
+      height: 180px;
+      object-fit: cover;
+    }
+
+    .pizza-card h3 {
+      margin: 0.5em;
+    }
+
+    .pizza-card button {
+      background-color: #ff7043;
+      color: white;
+      border: none;
+      padding: 0.5em 1em;
+      margin: 0.5em;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+
+    .pizza-card button:hover {
+      background-color: #ff5722;
+    }
+
+    .builder, .login, .reviews, .about {
+      background: white;
+      padding: 1em;
+      border-radius: 12px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    }
+
+    .login input {
+      padding: 0.5em;
+      margin: 0.3em 0;
+      width: 100%;
+    }
+
+    .reviews ul {
+      list-style: none;
+      padding: 0;
+    }
+
+    .reviews li {
+      padding: 0.5em 0;
+      border-bottom: 1px solid #ddd;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>🍕 Tham's Pizza</h1>
+    <p>Fresh, Hot, and Delivered with Love</p>
+  </header>
+
+  <nav>
+    <a href="#menu">Menu</a>
+    <a href="#builder">Build Your Pizza</a>
+    <a href="#login">Login</a>
+    <a href="#reviews">Reviews</a>
+    <a href="#about">About Us</a>
+  </nav>
+
+  <div class="container">
+    <section class="section" id="menu">
+      <h2>Our Menu</h2>
+      <div class="pizza-grid">
+        <div class="pizza-card">
+          <img src="https://images.pexels.com/photos/825661/pexels-photo-825661.jpeg" alt="Pepperoni Pizza">
+          <h3>Pepperoni</h3>
+          <button onclick="addToCart('Pepperoni')">Add to Cart</button>
+        </div>
+        <div class="pizza-card">
+          <img src="https://images.pexels.com/photos/5640041/pexels-photo-5640041.jpeg" alt="Veggie Pizza">
+          <h3>Veggie</h3>
+          <button onclick="addToCart('Veggie')">Add to Cart</button>
+        </div>
+        <div class="pizza-card">
+          <img src="https://images.pexels.com/photos/3644/pizza-restaurant-dinner-lunch.jpg" alt="Cheese Pizza">
+          <h3>Cheese</h3>
+          <button onclick="addToCart('Cheese')">Add to Cart</button>
+        </div>
+      </div>
+    </section>
+
+    <section class="section builder" id="builder">
+      <h2>Build Your Pizza</h2>
+      <label><input type="checkbox" value="Extra Cheese"> Extra Cheese</label><br>
+      <label><input type="checkbox" value="Pepperoni"> Pepperoni</label><br>
+      <label><input type="checkbox" value="Mushrooms"> Mushrooms</label><br>
+      <label><input type="checkbox" value="Olives"> Olives</label><br>
+      <button onclick="buildPizza()">Create Pizza</button>
+      <p id="builder-output"></p>
+    </section>
+
+    <section class="section login" id="login">
+      <h2>Login</h2>
+      <input type="text" id="username" placeholder="Username">
+      <input type="password" id="password" placeholder="Password">
+      <button onclick="login()">Login</button>
+      <p id="login-message"></p>
+    </section>
+
+    <section class="section reviews" id="reviews">
+      <h2>Customer Reviews</h2>
+      <ul>
+        <li>"Best pizza in town!" – Ada</li>
+        <li>"Delivered hot and fresh. Love it!" – Tunde</li>
+        <li>"Custom pizza builder is amazing!" – Chidi</li>
+      </ul>
+    </section>
+
+    <section class="section about" id="about">
+      <h2>About Us</h2>
+      <p>Tham’s Pizza started in a small kitchen with a big dream: to bring joy through slices. Our dough is handmade daily, our sauces are slow-cooked, and our toppings are always fresh. Whether you're building your own or grabbing a classic, we serve every pizza with pride. Taste, tradition, and love — that’s the Tham’s way.</p>
+    </section>
+  </div>
+
+  <script>
+    // Page fade-in
+    window.addEventListener('load', () => {
+      document.body.classList.add('loaded');
+    });
+
+    // Section scroll-in animation
+    const sections = document.querySelectorAll('.section');
+    const observer = new IntersectionObserver(entries => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+        }
+      });
+    }, { threshold: 0.2 });
+
+    sections.forEach(section => observer.observe(section));
+
+    // Interactions
+    function addToCart(pizza) {
+      alert(`${pizza} Pizza added to cart!`);
+    }
+
+    function buildPizza() {
+      const checkboxes = document.querySelectorAll('.builder input[type="checkbox"]');
+      const selected = [...checkboxes].filter(cb => cb.checked).map(cb => cb.value);
+      document.getElementById("builder-output").innerText =
+        selected.length ? `You built a pizza with: ${selected.join(", ")}` : "No toppings selected.";
+    }
+
+    function login() {
+      const username = document.getElementById("username").value;
+      const password = document.getElementById("password").value;
+      const message = document.getElementById("login-message");
+      if (username === "admin" && password === "pizza123") {
+        message.textContent = `Welcome, ${username}!`; 
+      } else {
+        message.textContent = "Incorrect credentials.";
+      }
+    }
+  </script>
+</body>
+</html>
